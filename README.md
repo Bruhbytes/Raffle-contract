@@ -1,66 +1,35 @@
-## Foundry
+# Proveable Random Raffle contracts
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## What are raffle contracts?
 
-Foundry consists of:
+Raffle contracts are legal agreements that outline the terms and conditions for conducting a raffle event. These contracts are typically used by organizations, charities, schools, clubs, or individuals who want to host a raffle to raise funds or offer prizes
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## How a Raffle Works
 
-## Documentation
+- Ticket Sales: People purchase raffle tickets, and the proceeds go towards a specific cause—in this example, wildlife conservation.
+- Prize Pool: There are prizes offered as incentives for people to buy tickets. These prizes can range from gift items, experiences, or even cash prizes.
+- Drawing: On the specified date, a drawing is conducted to randomly select winners from the pool of ticket buyers.
+- Winner Announcement: The winners are announced and notified, and they receive the prizes.
 
-https://book.getfoundry.sh/
+## Key Components of a Raffle Contract
 
-## Usage
+- Parties Involved: Specifies the promoter (the person or organization organizing the raffle) and the participants.
+- Prizes: Details the prizes being offered in the raffle.
+- Ticket Sales: Information on ticket prices, sales methods, and refund policies.
+- Eligibility: Criteria for who can participate in the raffle.
+- Drawing Process: How the winners will be selected and the date of the drawing.
+- Winner Notification: How winners will be informed of their prize.
+- Legal Compliance: Ensures the raffle adheres to local laws and regulations.
 
-### Build
+## About
 
-```shell
-$ forge build
-```
+The code is about creating a proveable random smart contract lottery
 
-### Test
+## What we want it to do?
 
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+1. Users can enter by buying a ticket
+    1. The ticket fees are going to the winner during the draw
+2. After X period of time, the system will automatically draw a winner and this will be done programmatically
+3. Using Chainlink VRF and Chainlink Automation
+    - Chainlink VRF -> Randomness
+    - Chainlink Automation -> Time based trigger
