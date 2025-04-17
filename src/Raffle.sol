@@ -69,6 +69,7 @@ contract Raffle is VRFConsumerBaseV2Plus{
 
     /* Events */
     event enteredRaffle(address indexed player);
+    event RequestedRaffleWinner(uint256 indexed requestId);
     event WinnerPicked(address indexed player);
 
     constructor(
@@ -77,7 +78,10 @@ contract Raffle is VRFConsumerBaseV2Plus{
         uint32 callBackGasLimit,
         uint256 fees, 
         uint256 interval, 
-        uint256 subscription)VRFConsumerBaseV2Plus(vrf_coordinator){
+        uint256 subscription,
+        address link
+            
+        )VRFConsumerBaseV2Plus(vrf_coordinator){
 
         s_vrfCoordinator = IVRFCoordinatorV2Plus(vrf_coordinator);
 
@@ -129,7 +133,7 @@ contract Raffle is VRFConsumerBaseV2Plus{
     3. The Raffle is in OPEN state
     4. (implicitly) the subscription is funded with enough LINK
      */
-    function checkUpKeep() public view returns(bool, bytes memory /*performData*/){
+    function checkUpkeep(bytes memory /* checkData */) public view returns(bool, bytes memory /*performData*/){
         bool timePassed = (block.timestamp - s_lastTimeStamp) >= i_interval;
         bool state = RaffleState.OPEN == s_raffleState;
         bool hasPlayers = s_players.length > 0;
@@ -144,8 +148,8 @@ contract Raffle is VRFConsumerBaseV2Plus{
         It requests VRF on Chainlink node to give the random number which in turn 
         will call fullfillRandomWords function
      */
-    function performUpKeep(bytes calldata /* performData */) external {
-        (bool upKeepNeeded, ) = checkUpKeep();
+    function performUpkeep(bytes calldata /* performData */) external {
+        (bool upKeepNeeded, ) = checkUpkeep("");
         console.log(upKeepNeeded);
         if(!upKeepNeeded){
             revert Raffle_UpKeepNotNeeded(s_raffleState, address(this).balance, s_players.length);
@@ -167,8 +171,8 @@ contract Raffle is VRFConsumerBaseV2Plus{
                 )
             })
         );
-        console.log(s_requestID);
-        console.log("performUpKeep successfully done");
+        
+        emit RequestedRaffleWinner(s_requestID);
     }
 
     function topUpSubscription(uint256 amount) external{
